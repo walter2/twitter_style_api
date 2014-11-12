@@ -7,7 +7,6 @@ with the twitter like program.
 """
 
 from repository import Repository
-from user import User
 
 
 class Service:
@@ -18,18 +17,21 @@ class Service:
 
     def __init__(self, repository):
         self.repository = repository
-        self.users = {}
 
     def register_user(self, first_name, last_name, user_name, password):
         """register() takes the first name, last name, user name and password
         of a new user.
         It returns True if a new user is successfully registered.
         """
-        new_user = User(first_name, last_name, user_name, password)
-        self.users[str(new_user)] = new_user
+        self.repository.register_user(
+            first_name,
+            last_name,
+            user_name,
+            password
+            )
         return True
 
     def get_users(self):
         """ get_users() returns the currently registered self.users list."""
-        users = [key for key in self.users.keys()]
+        users = [key for key in self.repository.users.keys()]
         return users

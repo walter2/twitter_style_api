@@ -36,7 +36,7 @@ class TestService(unittest.TestCase):
         expected = ['bhill']
         actual = self.service.get_users()
         self.assertEqual(expected, actual)
-        self.assertTrue(isinstance(self.service.users['bhill'], User))
+        self.assertTrue(isinstance(self.service.repository.users['bhill'], User))
 
 
 if __name__ == '__main__':

@@ -19,15 +19,25 @@ def process_stdin():
     The function terminates by pressing Enter.
     """
     #initiation of repository and service
-    repository = Repository
+    repository = Repository()
     service = Service(repository)
     try:
         for line in sys.stdin:
             if line.rstrip() == '':
                 break
-            for item in line.rstrip().split():
-                print('You entered:', item)
+            input_arguments = line.rstrip().split()
+            if input_arguments[0] == '--register' or input_arguments[0] == '-r':
+                service.register_user(
+                        input_arguments[1],
+                        input_arguments[2],
+                        input_arguments[3],
+                        input_arguments[4],
+                        )
+                print('User \'{0}\' is registered.'.format(input_arguments[3]))
+            elif input_arguments[0] == '--users' or input_arguments[0] == '-u':
+                print(service.get_users())
             print('')
+
     except Exception as msg:
         print(msg)
 
