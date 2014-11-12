@@ -23,13 +23,24 @@ class Service:
         of a new user.
         It returns True if a new user is successfully registered.
         """
-        self.repository.register_user(
-            first_name,
-            last_name,
-            user_name,
-            password
-            )
-        return True
+        if not first_name or not last_name or not user_name or not password:
+            raise ValueError ('Please provide full user details with first, last, user name and password.')
+
+        if user_name not in self.repository.users:
+            self.repository.register_user(
+                first_name,
+                last_name,
+                user_name,
+                password
+                )
+            print('User \'{0}\' is registered.'.format(user_name))
+            return True
+        else:
+            error_message = 'The user \'{0}\' exists already. Please choose another user name.'\
+                             .format(user_name)
+            print(error_message)
+            return error_message
+
 
     def get_users(self):
         """ get_users() returns the currently registered self.users list."""

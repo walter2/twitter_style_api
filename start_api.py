@@ -27,13 +27,16 @@ def process_stdin():
                 break
             input_arguments = line.rstrip().split()
             if input_arguments[0] == '--register' or input_arguments[0] == '-r':
-                service.register_user(
-                        input_arguments[1],
-                        input_arguments[2],
-                        input_arguments[3],
-                        input_arguments[4],
-                        )
-                print('User \'{0}\' is registered.'.format(input_arguments[3]))
+                if len(input_arguments) == 5:
+                    service.register_user(
+                            input_arguments[1],
+                            input_arguments[2],
+                            input_arguments[3],
+                            input_arguments[4],
+                            )
+                else:
+                    print('User registration requiers four arguments. You provided {}.' \
+                           .format(len(input_arguments) - 1))
             elif input_arguments[0] == '--users' or input_arguments[0] == '-u':
                 print(service.get_users())
             print('')
