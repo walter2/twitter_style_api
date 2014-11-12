@@ -84,5 +84,23 @@ class TestService(unittest.TestCase):
         expected = False
         actual = self.service.login('bmount', 'qwerty')
         self.assertEqual(expected, actual)
+
+# user logout
+
+    def test_a_logged_in_user_can_logout(self):
+        self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
+        self.service.login('bhill', 'qwerty')
+        expected = True
+        actual = self.service.logout('bhill')
+        self.assertEqual(expected, actual)
+
+    def test_only_logged_in_users_can_be_logged_out(self):
+        self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
+        self.service.register_user('Tim', 'House', 'thouse', 'pass')
+        self.service.login('bhill', 'qwerty')
+        expected = False
+        actual = self.service.logout('thouse')
+        self.assertEqual(expected, actual)
+
 if __name__ == '__main__':
     unittest.main(exit=False)

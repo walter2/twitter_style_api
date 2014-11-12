@@ -17,6 +17,7 @@ class Service:
 
     def __init__(self, repository):
         self.repository = repository
+        self.logged_in_user = []
 
     def register_user(self, first_name, last_name, user_name, password):
         """register() takes the first name, last name, user name and password
@@ -49,12 +50,30 @@ class Service:
         if user_name in self.repository.users: 
             if self.repository.users[user_name].password == password:
                 print('{0} is now logged in'.format(user_name))
+                self.logged_in_user.append(user_name)
                 return True
             else:
+                print('Incorrect password. Please try again.')
                 return False
         else:
+            print('Incorrect login details. Please try again.')
             return False
 
+    def logout(self, user_name):
+        """ logout() takes a user name and loggs the user out.
+        If the logout was successful True is returned, otherwise False.
+        """
+        if user_name not in self.logged_in_user:
+            if len(self.logged_in_user) == 1:
+                print('Only logged in users can be logged out. Currently logged in: {0}.'\
+                       .format(self.logged_in_user[0]))
+            else:
+                print('No users are currently logged in.')
+            return False
+        else:
+            self.logged_in_user.remove(user_name)
+            print('User {0} is now logged out.'.format(user_name))
+            return True
 
     def get_users(self):
         """ get_users() returns the currently registered self.users list."""

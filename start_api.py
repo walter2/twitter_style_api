@@ -39,6 +39,8 @@ def process_stdin():
                            .format(len(input_arguments) - 1))
             elif input_arguments[0] == '--login' or input_arguments[0] == '-li':
                  service.login(input_arguments[1], input_arguments[2])
+            elif input_arguments[0] == '--logout' or input_arguments[0] == '-lo':
+                 service.logout(input_arguments[1])
             elif input_arguments[0] == '--users' or input_arguments[0] == '-u':
                 print(service.get_users())
             else:
