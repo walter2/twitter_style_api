@@ -26,3 +26,13 @@ eg:
   would display:
   
    ['timt']
+
+4. A user can be logged in with '--login' or '-li'. The logged in user is then displayed. eg:
+   -li timt qwerty
+
+
+Pending features:
+- session management so that only one user can be logged in
+- logged in user can posts status updates
+- logged in users can follow other users
+- view users public time line
