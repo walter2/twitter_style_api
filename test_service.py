@@ -37,7 +37,7 @@ class TestService(unittest.TestCase):
 
     def test_a_user_name_can_be_only_registered_once(self):        
         self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
-        expected = 'The user \'bhill\' exists already. Please choose another name.'
+        expected = 'The user \'bhill\' exists already. Please choose another user name.'
         actual = self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
         self.assertEqual(expected, actual)
 
@@ -62,8 +62,27 @@ class TestService(unittest.TestCase):
         expected = ['bhill']
         actual = self.service.get_users()
         self.assertEqual(expected, actual)
-        self.assertTrue(isinstance(self.service.repository.users['bhill'], User))
+        self.assertTrue(isinstance(self.service.repository.users['bhill'], User)
+)
 
+# user login
 
+    def test_user_can_login_with_matching_details(self):
+        self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
+        expected = True
+        actual = self.service.login('bhill', 'qwerty')
+        self.assertEqual(expected, actual)
+    
+    def test_user_cannot_login_with_false_password(self):
+        self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
+        expected = False
+        actual = self.service.login('bhill', 'incorrect')
+        self.assertEqual(expected, actual)
+
+    def test_user_cannot_login_with_incorrect_user_name(self):
+        self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
+        expected = False
+        actual = self.service.login('bmount', 'qwerty')
+        self.assertEqual(expected, actual)
 if __name__ == '__main__':
     unittest.main(exit=False)

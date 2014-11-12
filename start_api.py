@@ -37,8 +37,12 @@ def process_stdin():
                 else:
                     print('User registration requiers four arguments. You provided {}.' \
                            .format(len(input_arguments) - 1))
+            elif input_arguments[0] == '--login' or input_arguments[0] == '-li':
+                 service.login(input_arguments[1], input_arguments[2])
             elif input_arguments[0] == '--users' or input_arguments[0] == '-u':
                 print(service.get_users())
+            else:
+                print('Invalid input. Please try again.')
             print('')
 
     except Exception as msg:

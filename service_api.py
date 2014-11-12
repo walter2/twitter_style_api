@@ -42,6 +42,20 @@ class Service:
             return error_message
 
 
+    def login(self, user_name, password):
+        """ login() requiers a user_name and a password.
+        It checks if the user name and password match and then logs the user in.
+        """
+        if user_name in self.repository.users: 
+            if self.repository.users[user_name].password == password:
+                print('{0} is now logged in'.format(user_name))
+                return True
+            else:
+                return False
+        else:
+            return False
+
+
     def get_users(self):
         """ get_users() returns the currently registered self.users list."""
         users = [key for key in self.repository.users.keys()]
