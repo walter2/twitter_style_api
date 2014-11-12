@@ -41,6 +41,7 @@ eg:
 
 
 Pending features:
+-----------------
 - session management so that only one user can be logged in
 - logged in user can posts status updates
 - logged in users can follow other users
