@@ -44,9 +44,11 @@ def process_stdin():
                                .format(len(input_arguments) - 1))
                 # login users
                 elif input_arguments[0] == '--login' or input_arguments[0] == '-li':
-                     if not token:
+                     if len(input_arguments) != 3:
+                         print('You entered invalid logon details. Please try again.')
+                     elif not token:
                          token = service.login(input_arguments[1], input_arguments[2])
-                         print('{0} is now logged in'\
+                         print('\'{0}\' is now logged in'\
                                 .format(input_arguments[1]))
                      else:
                          print('Another user already logged in. Please logout first.')
@@ -54,7 +56,7 @@ def process_stdin():
                 elif input_arguments[0] == '--logout' or input_arguments[0] == '-lo':
                     service.logout(input_arguments[1])
                     token = ''
-                    print('User {0} is now logged out.'\
+                    print('User \'{0}\' is now logged out.'\
                            .format(input_arguments[1]))
                 # logged in users can post
                 elif input_arguments[0] == '--post' or input_arguments[0] == '-p':
@@ -65,11 +67,30 @@ def process_stdin():
                 # logged in users can follow other users
                 elif input_arguments[0] == '--follow' or input_arguments[0] == '-f':
                     service.follow(token, input_arguments[1])
-                    print('{0} is now following: \'{1}\''\
+                    print('\'{0}\' is now following: \'{1}\''\
                            .format(token.user_name, input_arguments[1]))
+                # get the public time line from users
+                elif input_arguments[0] == '--timeline' or input_arguments[0] == '-tl':
+                    time_line = service.get_public_time_line(input_arguments[1])
+                    counter = 1
+                    print('Here are {0}\'s posts:'.format(input_arguments[1]))
+                    for post in time_line:
+                        print('{0}. {1}'.format(counter, post))
+                        counter += 1
+                # help menu
+                elif input_arguments[0] == '--help' or input_arguments[0] == '-h':
+                    print('''This application can be operated with:
+  --help     -h   Open the help menu.
+  --follow   -f   Follow add another user to the following list of the logged in user, requiered arguments: user_name
+  --login    -li  Login a user, requiered arguments: user_name and password
+  --logout   -lo  Log a user out, requiered arguments: user_name
+  --post     -p   Post a new update for a logged in user, requiered arguments: message text
+  --register -r   Register a user, requiered arguments: first_name last_name user_name password
+  --timeline -tl  Show the time line of a user, requiered arguments: user_name
+''')
                 # invalid input returns an error message
                 else:
-                    print('Invalid input. Please try again.')
+                    print('Invalid input. Please use \'--help\' or \'-h\' for more info.')
                 print('')
 
             except Exception as messsage:

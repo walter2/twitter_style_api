@@ -154,5 +154,23 @@ class TestService(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.service.follow(token, 'not_here')
 
+# view public user time line
+
+    def test_a_users_time_line_can_be_viewed(self):
+        self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
+        token = self.service.login('bhill', 'qwerty')
+        self.service.post(token, 'this is my first post')
+        self.service.post(token, 'post number 2')
+        self.service.post(token, '3 now posted.')
+        self.service.logout('bhill')
+        expected = ['this is my first post', 'post number 2', '3 now posted.']
+        actual = self.service.get_public_time_line('bhill')
+        self.assertEqual(expected, actual)
+
+    def test_non_existent_users_raise_an_error(self):
+        with self.assertRaises(ValueError):
+            self.service.get_public_time_line('bhill')
+
+
 if __name__ == '__main__':
     unittest.main(exit=False)

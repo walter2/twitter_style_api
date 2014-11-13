@@ -53,15 +53,6 @@ class Repository:
         """ save_post() takes a post as argument and saves it to self.posts."""
         self.posts.append(post)
 
-    def get_public_time_line(self, user_name):
-        """ get_public_posts() takes a user name as input.
-        It returns all the of the user in a list."""
-        user_posts = []
-        for post in self.posts:
-            if post.user_name == user_name:
-                user_posts.append(post.text)
-        return user_posts
-
     def get_token_by_user_name(self, user_name):
         """ get_token_by_user_name() takes a user name as input and
         returns the corresponding token. This method is required for the user
@@ -80,3 +71,12 @@ class Repository:
             self.users[logged_in_user].following.append(user_name)
         else:
             raise ValueError ('The user following was not possible.')
+
+    def get_public_time_line(self, user_name):
+        """ get_public_posts() takes a user name as input.
+        It returns all the posts of the user in a list."""
+        user_posts = []
+        for post in self.posts:
+            if post.user_name == user_name:
+                user_posts.append(post.text)
+        return user_posts

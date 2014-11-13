@@ -87,3 +87,12 @@ class Service:
         following is then escalated to the repository.
         """
         self.repository.follow_users(token, user_name)
+
+    def get_public_time_line(self, user_name):
+        """ get_public_time_line() takes a user name as input.
+        It returns the public time line from this user as a list.
+        """
+        if user_name in self.repository.users:
+            return self.repository.get_public_time_line(user_name)
+        else:
+            raise ValueError ('The user {0} does not exist.'.format(user_name))
