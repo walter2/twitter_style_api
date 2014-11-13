@@ -81,3 +81,9 @@ class Service:
             self.repository.save_post(post)
         else:
             raise ValueError ('The provided token is invalid and you cannot post.')
+
+    def follow(self, token, user_name):
+        """ follow() takes a token and user name as input. The process of
+        following is then escalated to the repository.
+        """
+        self.repository.follow_users(token, user_name)

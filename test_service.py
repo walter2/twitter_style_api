@@ -123,5 +123,36 @@ class TestService(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.service.post(token, 'this is my post')
 
+# followint users
+
+    def test_logged_in_user_can_follow_other_users(self):
+        self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
+        self.service.register_user('Ann', 'White', 'awhite', 'secret')
+        self.service.register_user('Tim', 'House', 'thouse', 'pass')
+        token = self.service.login('bhill', 'qwerty')
+        self.service.follow(token, 'awhite')
+        self.service.follow(token, 'thouse')
+        expected = ['awhite', 'thouse']
+        actual = self.repository.users['bhill'].following
+        self.assertEqual(expected, actual)
+
+    def test_logged_in_user_cannot_follow_another_user_twice(self):
+        self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
+        self.service.register_user('Ann', 'White', 'awhite', 'secret')
+        self.service.register_user('Tim', 'House', 'thouse', 'pass')
+        token = self.service.login('bhill', 'qwerty')
+        self.service.follow(token, 'awhite')
+        self.service.follow(token, 'thouse')
+        with self.assertRaises(ValueError):
+            self.service.follow(token, 'thouse')
+
+    def test_logged_in_user_cannot_follow_non_existing_user(self):
+        self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
+        self.service.register_user('Ann', 'White', 'awhite', 'secret')
+        token = self.service.login('bhill', 'qwerty')
+        self.service.follow(token, 'awhite')
+        with self.assertRaises(ValueError):
+            self.service.follow(token, 'not_here')
+
 if __name__ == '__main__':
     unittest.main(exit=False)

@@ -69,3 +69,14 @@ class Repository:
         for token in self.tokens:
             if user_name == token.user_name:
                 return token
+
+    def follow_users(self, token, user_name):
+        """ follow_users() takes a user name as input.
+        It adds the user to the signed on users follow_list."""
+        logged_in_user = token.user_name
+        if user_name in self.users[logged_in_user].following:
+            raise ValueError ('You are following already this user.')
+        elif user_name in self.users:
+            self.users[logged_in_user].following.append(user_name)
+        else:
+            raise ValueError ('The user following was not possible.')

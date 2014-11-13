@@ -12,11 +12,11 @@ class User:
     """
 
     def __init__(self, first_name, last_name, user_name, password):
-#        print(first_name, last_name, user_name, password)
         self.first_name = first_name
         self.last_name = last_name
         self.user_name = user_name
         self.password = password
+        self.following = []
 
     def __str__(self):
         """String repesentation of user with the user_name."""

@@ -46,19 +46,27 @@ def process_stdin():
                 elif input_arguments[0] == '--login' or input_arguments[0] == '-li':
                      if not token:
                          token = service.login(input_arguments[1], input_arguments[2])
-                         print('{0} is now logged in'.format(input_arguments[1]))
+                         print('{0} is now logged in'\
+                                .format(input_arguments[1]))
                      else:
                          print('Another user already logged in. Please logout first.')
                 # logout users
                 elif input_arguments[0] == '--logout' or input_arguments[0] == '-lo':
                     service.logout(input_arguments[1])
                     token = ''
-                    print('User {0} is now logged out.'.format(input_arguments[1]))
+                    print('User {0} is now logged out.'\
+                           .format(input_arguments[1]))
                 # logged in users can post
                 elif input_arguments[0] == '--post' or input_arguments[0] == '-p':
                     new_post = ' '.join(word for word in input_arguments[1:])
                     service.post(token, new_post)
-                    print('{0} posted: \'{1}\''.format(token.user_name, new_post))
+                    print('{0} posted: \'{1}\''\
+                           .format(token.user_name, new_post))
+                # logged in users can follow other users
+                elif input_arguments[0] == '--follow' or input_arguments[0] == '-f':
+                    service.follow(token, input_arguments[1])
+                    print('{0} is now following: \'{1}\''\
+                           .format(token.user_name, input_arguments[1]))
                 # invalid input returns an error message
                 else:
                     print('Invalid input. Please try again.')
