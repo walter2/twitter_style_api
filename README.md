@@ -4,8 +4,10 @@ twitter_style_api
 This project implements a command line API and mimics the basic workings of a platorm like twitter.
 It is written in Python 3.4 and is to be run in the terminal.
 
-Currently it is possible to register new users and to log them in and out from the terminal session. When a user is logged in he can post status updates.
+It is possible to register new users and to log them in and out from the terminal session. When a user is logged in he can post status updates and follow other users.
 Only one user can be logged on through the terminal session.
+
+Error messages are displayed upon invalid input.
 
 The terminal session is ended by pressing Enter.
 
@@ -34,7 +36,12 @@ eg:
    --post This is my first post.
 
 
-5. A logged in user can be logged out with '--logout' or '-lo' and the user name:
+5. A logged in user can follow other users with '--follow' or '-f' followed by a valid user name. The connection is then confirmed. eg:
+ 
+   --follow bhill
+
+
+6. A logged in user can be logged out with '--logout' or '-lo' and the user name:
  
    --logout timt
 
@@ -42,5 +49,4 @@ eg:
 Pending features:
 -----------------
 
-- logged in users can follow other users
 - view users public time line
