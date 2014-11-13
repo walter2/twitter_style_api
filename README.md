@@ -4,7 +4,7 @@ twitter_style_api
 This project implements a command line API and mimics the basic workings of a platform like twitter.
 It is written in Python 3.4 and is to be run in the terminal.
 
-It is possible to register new users and to log them in and out from the terminal. When a user is logged in he can post status updates and follow other users. Only one user can be logged on through the terminal session.
+It is possible to register new users and to log them in and out from the terminal. When a user is logged in he can post status updates and follow other users and display the posts of all uses he is following. Only one user can be logged on through the terminal session.
 A public time line is visible of each user regardless of the logon status.
 
 Error messages are displayed upon invalid input.
@@ -42,16 +42,21 @@ eg:
    --follow benh
 
 
-6. A logged in user can be logged out with '--logout' or '-lo' and the user name:
+6. A logged in user can see all the posts of the uses he is following by typing '--showfollowing' or '-sf':
+
+   -sf
+
+
+7. A logged in user can be logged out with '--logout' or '-lo' and the user name:
  
    --logout timt
 
 
-7. To view the public time line of users use '--timeline' or '-tl' followed by the user name. eg:
+8. To view the public time line of users use '--timeline' or '-tl' followed by the user name. eg:
 
    -tl timt
 
-8. The help menu can be viewed by entering '--help' or '-h'.
+9. The help menu can be viewed by entering '--help' or '-h'.
 
 
 What comes next
