@@ -29,6 +29,17 @@ class Repository:
         self.users[user_name] = User(first_name, last_name, user_name, password)
         return True
 
+    def login_authentication(self, user_name, password):
+        """ login_authentication() takes a user name and password as input.
+        It verifies that the data is valid and returns True. If the data 
+        is not correct it returns False.
+        """
+        try:
+            if self.users[user_name].password == password:
+                return True
+        except Exception as message:
+            print(message)
+
     def assign_token(self, user_name, token_string):
         """ assign_token() takes a user_name and token string as input.
         It generates a token with the Token class and adds the token to
@@ -58,6 +69,3 @@ class Repository:
         for token in self.tokens:
             if user_name == token.user_name:
                 return token
-
-    def user_login(self, user_name, password):
-        pass

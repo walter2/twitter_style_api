@@ -50,13 +50,10 @@ class Service:
         """ login() requiers a user_name and a password.
         It checks if the user name and password match and then logs the user in.
         """
-        if user_name in self.repository.users:
-            if self.repository.users[user_name].password == password:
-                token_string = self.generate_token_string()
-                new_token = self.repository.assign_token(user_name, token_string)
-                return new_token
-            else:
-                raise ValueError ('Incorrect password. Please try again.')
+        if self.repository.login_authentication(user_name, password):
+            token_string = self.generate_token_string()
+            new_token = self.repository.assign_token(user_name, token_string)
+            return new_token
         else:
             raise ValueError ('Incorrect login details. Please try again.')
 
