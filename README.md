@@ -1,7 +1,7 @@
 twitter_style_api
 =================
 
-This project implements a command line API and mimics the basic workings of a platorm like twitter.
+This project implements a command line API and mimics the basic workings of a platform like twitter.
 It is written in Python 3.4 and is to be run in the terminal.
 
 It is possible to register new users and to log them in and out from the terminal session. When a user is logged in he can post status updates and follow other users.
