@@ -37,9 +37,8 @@ class TestService(unittest.TestCase):
 
     def test_a_user_name_can_be_only_registered_once(self):        
         self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
-        expected = 'The user \'bhill\' exists already. Please choose another user name.'
-        actual = self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
-        self.assertEqual(expected, actual)
+        with self.assertRaises(ValueError):
+            self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
 
     def test_user_registration_requiers_first_name(self):
         with self.assertRaises(ValueError):
@@ -56,14 +55,6 @@ class TestService(unittest.TestCase):
     def test_user_registration_requiers_password(self):
         with self.assertRaises(ValueError):
             self.service.register_user('Bill', 'Hill', 'bhill', '')
-# user display
-    def test_service_has_access_to_existing_users(self):
-        self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
-        expected = ['bhill']
-        actual = self.service.get_users()
-        self.assertEqual(expected, actual)
-        self.assertTrue(isinstance(self.service.repository.users['bhill'], User)
-)
 
 # user login
 
@@ -71,36 +62,66 @@ class TestService(unittest.TestCase):
         self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
         expected = True
         actual = self.service.login('bhill', 'qwerty')
-        self.assertEqual(expected, actual)
+        self.assertTrue(actual)
     
     def test_user_cannot_login_with_false_password(self):
         self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
-        expected = False
-        actual = self.service.login('bhill', 'incorrect')
-        self.assertEqual(expected, actual)
+        with self.assertRaises(ValueError):
+            self.service.login('bhill', 'incorrect')
 
     def test_user_cannot_login_with_incorrect_user_name(self):
         self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
-        expected = False
-        actual = self.service.login('bmount', 'qwerty')
+        with self.assertRaises(ValueError):
+            self.service.login('billh', 'qwerty')
+
+    def test_logged_in_user_gets_a_token_assigned(self):
+        self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
+        token = self.service.login('bhill', 'qwerty')
+        expected = 'bhill'
+        actual = token.user_name
+        self.assertEqual(expected, actual)
+
+    def test_multiple_users_can_login_to_the_service(self):
+        self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
+        self.service.register_user('Tim', 'House', 'thouse', 'pass')
+        self.service.login('bhill', 'qwerty')
+        self.service.login('thouse', 'pass')
+        expected = 2
+        actual = len(self.repository.tokens)
         self.assertEqual(expected, actual)
 
 # user logout
 
     def test_a_logged_in_user_can_logout(self):
         self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
-        self.service.login('bhill', 'qwerty')
+        token = self.service.login('bhill', 'qwerty')
         expected = True
         actual = self.service.logout('bhill')
         self.assertEqual(expected, actual)
+        self.assertFalse(token in self.repository.tokens)
 
     def test_only_logged_in_users_can_be_logged_out(self):
         self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
         self.service.register_user('Tim', 'House', 'thouse', 'pass')
         self.service.login('bhill', 'qwerty')
-        expected = False
-        actual = self.service.logout('thouse')
+        with self.assertRaises(ValueError):
+            self.service.logout('thouse')
+
+# user post creation
+
+    def test_logged_in_user_can_post(self):
+        self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
+        token = self.service.login('bhill', 'qwerty')
+        self.service.post(token, 'this is my post')
+        expected = ['this is my post']
+        actual = self.repository.get_public_time_line('bhill')
         self.assertEqual(expected, actual)
+
+    def test_logged_out_user_cannot_post(self):
+        self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
+        token = 'abcdef'
+        with self.assertRaises(ValueError):
+            self.service.post(token, 'this is my post')
 
 if __name__ == '__main__':
     unittest.main(exit=False)

@@ -6,7 +6,14 @@ service_api.py implements the API through which interactions are done
 with the twitter like program.
 """
 
+import random
+import string
+
 from repository import Repository
+from user_post import Post
+
+
+TOKEN_LENGTH = 8
 
 
 class Service:
@@ -17,7 +24,7 @@ class Service:
 
     def __init__(self, repository):
         self.repository = repository
-        self.logged_in_user = []
+        self.token_length = TOKEN_LENGTH
 
     def register_user(self, first_name, last_name, user_name, password):
         """register() takes the first name, last name, user name and password
@@ -34,48 +41,46 @@ class Service:
                 user_name,
                 password
                 )
-            print('User \'{0}\' is registered.'.format(user_name))
             return True
         else:
-            error_message = 'The user \'{0}\' exists already. Please choose another user name.'\
-                             .format(user_name)
-            print(error_message)
-            return error_message
-
+            raise ValueError ('The user \'{0}\' exists already. Please choose another user name.'\
+                             .format(user_name))
 
     def login(self, user_name, password):
         """ login() requiers a user_name and a password.
         It checks if the user name and password match and then logs the user in.
         """
-        if user_name in self.repository.users: 
+        if user_name in self.repository.users:
             if self.repository.users[user_name].password == password:
-                print('{0} is now logged in'.format(user_name))
-                self.logged_in_user.append(user_name)
-                return True
+                token_string = self.generate_token_string()
+                new_token = self.repository.assign_token(user_name, token_string)
+                return new_token
             else:
-                print('Incorrect password. Please try again.')
-                return False
+                raise ValueError ('Incorrect password. Please try again.')
         else:
-            print('Incorrect login details. Please try again.')
-            return False
+            raise ValueError ('Incorrect login details. Please try again.')
+
+    def generate_token_string(self):
+        """ generate_token_string() returns a random token."""
+        char = string.ascii_letters
+        return ''.join(random.choice(char) for character in range(self.token_length))
 
     def logout(self, user_name):
         """ logout() takes a user name and loggs the user out.
         If the logout was successful True is returned, otherwise False.
         """
-        if user_name not in self.logged_in_user:
-            if len(self.logged_in_user) == 1:
-                print('Only logged in users can be logged out. Currently logged in: {0}.'\
-                       .format(self.logged_in_user[0]))
-            else:
-                print('No users are currently logged in.')
-            return False
-        else:
-            self.logged_in_user.remove(user_name)
-            print('User {0} is now logged out.'.format(user_name))
+        try:
+            token = self.repository.get_token_by_user_name(user_name)
+            self.repository.tokens.remove(token)
             return True
+        except:
+            raise ValueError ('The logout was not possible.')
 
-    def get_users(self):
-        """ get_users() returns the currently registered self.users list."""
-        users = [key for key in self.repository.users.keys()]
-        return users
+    def post(self, token, text):
+        """ post() takes a token and a text as input."""
+        if token in self.repository.tokens:
+            user_name = token.user_name
+            post = Post(user_name, text)
+            self.repository.save_post(post)
+        else:
+            raise ValueError ('The provided token is invalid and you cannot post.')
