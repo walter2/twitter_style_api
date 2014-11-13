@@ -4,12 +4,13 @@ twitter_style_api
 This project implements a command line API and mimics the basic workings of a platform like twitter.
 It is written in Python 3.4 and is to be run in the terminal.
 
-It is possible to register new users and to log them in and out from the terminal session. When a user is logged in he can post status updates and follow other users.
-Only one user can be logged on through the terminal session.
+It is possible to register new users and to log them in and out from the terminal. When a user is logged in he can post status updates and follow other users. Only one user can be logged on through the terminal session.
+A public time line is visible of each user regardless of the logon status.
 
 Error messages are displayed upon invalid input.
-
 The terminal session is ended by pressing Enter.
+
+Currently tests are available for the service api.
 
 
 Usage
@@ -38,7 +39,7 @@ eg:
 
 5. A logged in user can follow other users with '--follow' or '-f' followed by a valid user name. The connection is then confirmed. eg:
  
-   --follow bhill
+   --follow benh
 
 
 6. A logged in user can be logged out with '--logout' or '-lo' and the user name:
@@ -46,7 +47,31 @@ eg:
    --logout timt
 
 
-Pending features:
------------------
+7. To view the public time line of users use '--timeline' or '-tl' followed by the user name. eg:
 
-- view users public time line
+   -tl timt
+
+8. The help menu can be viewed by entering '--help' or '-h'.
+
+
+What comes next
+---------------
+
+This program is by no means complete and many features can be added to mature it.
+
+
+Those things can be added to improve usability:
+- restricting the length of posts
+- some more basic features for user interactions
+- tests for the other program parts
+- folder structure of the project
+- more descriptive error messages
+
+
+
+When there is lots of time and it should become a real project continue here:
+- date and time adding
+- password strength tester
+- session token expiration
+- connect the repository to a data base
+- user management
