@@ -68,6 +68,7 @@ Those things can be added to improve usability:
 - more descriptive error messages
 
 
+
 When there is lots of time and it should become a real project continue here:
 - date and time adding
 - password strength tester
