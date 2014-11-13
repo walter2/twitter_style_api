@@ -1,9 +1,11 @@
 twitter_style_api
 =================
 
-This project implements a command line API which mimics the basic workings of twitter.
+This project implements a command line API and mimics the basic workings of a platorm like twitter.
+It is written in Python 3.4 and is to be run in the terminal.
 
-It is possible to register users and to display the registered user list.
+Currently it is possible to register, display registered users and to login and -out users.
+
 
 Usage
 =====
@@ -21,17 +23,25 @@ eg:
 
 3. All registered users can be dispalyed with '--users' '-u'. eg:
 
-   --u
+   -u
 
   would display:
   
    ['timt']
 
-4. A user can be logged in with '--login' or '-li'. The logged in user is then displayed. eg:
+
+4. A user can be logged in with '--login' or '-li' followed by the user name and password of the user. The logged in user is then displayed. eg:
+
    -li timt qwerty
 
 
+5. A logged in user can be logged out with '--logout' or '-lo' and the user name:
+ 
+   --logout timt
+
+
 Pending features:
+-----------------
 - session management so that only one user can be logged in
 - logged in user can posts status updates
 - logged in users can follow other users
