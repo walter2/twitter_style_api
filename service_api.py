@@ -96,3 +96,22 @@ class Service:
             return self.repository.get_public_time_line(user_name)
         else:
             raise ValueError ('The user {0} does not exist.'.format(user_name))
+
+
+    def show_following_posts(self, token):
+        """ show_following_posts() takes a token as input.
+        It returns a list of all users, with user names and posts, that the user
+        of the token is following.
+        """
+        #get the following user names of the token user
+        #get the posts of each of the following users
+        signed_in_user_following = self.repository.users[token.user_name].following
+        if len(signed_in_user_following) > 0:
+            following_posts = []
+            for name in signed_in_user_following:
+                posts = self.get_public_time_line(name)
+                following_posts.append([name, posts])
+                posts = []
+            return following_posts
+        else:
+            raise ValueError ('{0} is not following any other users.'.format(token.user_name))

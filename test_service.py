@@ -171,6 +171,33 @@ class TestService(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.service.get_public_time_line('bhill')
 
+# show following status updates
+
+    def test_logged_in_user_can_see_posts_of_users_it_follows(self):
+        self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
+        self.service.register_user('Ann', 'White', 'awhite', 'secret')
+        self.service.register_user('Tim', 'House', 'thouse', 'pass')
+        token = self.service.login('awhite', 'secret')
+        self.service.post(token, 'Anns first post')
+        self.service.post(token, 'Anns second post')
+        self.service.logout('awhite')
+        token = self.service.login('thouse', 'pass')
+        self.service.post(token, 'Tims 1st post')
+        self.service.post(token, 'Tims 2nd post')
+        self.service.logout('thouse')
+        token = self.service.login('bhill', 'qwerty')
+        self.service.follow(token, 'awhite')
+        self.service.follow(token, 'thouse')
+        expected = [['awhite', ['Anns first post', 'Anns second post']], \
+                    ['thouse', ['Tims 1st post', 'Tims 2nd post']]]
+        actual = self.service.show_following_posts(token)
+        self.assertEqual(expected, actual)
+
+    def test_logged_in_user_without_following_users_gets_error_message(self):
+        self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
+        token = self.service.login('bhill', 'qwerty')
+        with self.assertRaises(ValueError):
+            self.service.show_following_posts(token)
 
 if __name__ == '__main__':
     unittest.main(exit=False)

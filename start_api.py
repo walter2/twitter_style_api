@@ -28,6 +28,7 @@ def process_stdin():
                 if line.rstrip() == '':
                     break
                 input_arguments = line.rstrip().split()
+
                 # register users
                 if input_arguments[0] == '--register' or input_arguments[0] == '-r':
                     if len(input_arguments) == 5:
@@ -42,6 +43,7 @@ def process_stdin():
                     else:
                         print('User registration requiers four arguments. You provided {}.' \
                                .format(len(input_arguments) - 1))
+
                 # login users
                 elif input_arguments[0] == '--login' or input_arguments[0] == '-li':
                      if len(input_arguments) != 3:
@@ -52,23 +54,27 @@ def process_stdin():
                                 .format(input_arguments[1]))
                      else:
                          print('Another user already logged in. Please logout first.')
+
                 # logout users
                 elif input_arguments[0] == '--logout' or input_arguments[0] == '-lo':
                     service.logout(input_arguments[1])
                     token = ''
                     print('User \'{0}\' is now logged out.'\
                            .format(input_arguments[1]))
-                # logged in users can post
+
+                # post as logged in user
                 elif input_arguments[0] == '--post' or input_arguments[0] == '-p':
                     new_post = ' '.join(word for word in input_arguments[1:])
                     service.post(token, new_post)
-                    print('{0} posted: \'{1}\''\
+                    print('\'{0}\' posted: \'{1}\''\
                            .format(token.user_name, new_post))
-                # logged in users can follow other users
+
+                # follow other users as logged in user
                 elif input_arguments[0] == '--follow' or input_arguments[0] == '-f':
                     service.follow(token, input_arguments[1])
                     print('\'{0}\' is now following: \'{1}\''\
                            .format(token.user_name, input_arguments[1]))
+
                 # get the public time line from users
                 elif input_arguments[0] == '--timeline' or input_arguments[0] == '-tl':
                     time_line = service.get_public_time_line(input_arguments[1])
@@ -77,16 +83,31 @@ def process_stdin():
                     for post in time_line:
                         print('{0}. {1}'.format(counter, post))
                         counter += 1
+
+                # get posts of following users of logged in user
+                elif input_arguments[0] == '--showfollowingposts' or input_arguments[0] == '-sf':
+                    following_posts = service.show_following_posts(token)
+                    post_counter = 1
+                    print('\'{0}\' follows'.format(token.user_name))
+                    for following in following_posts:
+                        print('\'{0}\'s posts are:'.format(following[0]))
+                        for post in following[1]:
+                            print('{0}. {1}'.format(post_counter, post))
+                            post_counter += 1
+                        post_counter = 1
+                        print('')
+
                 # help menu
                 elif input_arguments[0] == '--help' or input_arguments[0] == '-h':
                     print('''This application can be operated with:
-  --help     -h   Open the help menu.
-  --follow   -f   Follow add another user to the following list of the logged in user, requiered arguments: user_name
-  --login    -li  Login a user, requiered arguments: user_name and password
-  --logout   -lo  Log a user out, requiered arguments: user_name
-  --post     -p   Post a new update for a logged in user, requiered arguments: message text
-  --register -r   Register a user, requiered arguments: first_name last_name user_name password
-  --timeline -tl  Show the time line of a user, requiered arguments: user_name
+  --help          -h   Open the help menu.
+  --follow        -f   Follow add another user to the following list of the logged in user, requiered arguments: user_name
+  --login         -li  Login a user, requiered arguments: user_name and password
+  --logout        -lo  Log a user out, requiered arguments: user_name
+  --post          -p   Post a new update for a logged in user, requiered arguments: message text
+  --register      -r   Register a user, requiered arguments: first_name last_name user_name password
+  --showfollowing -sf  Shows the posts of all users that the signed on user is followeding
+  --timeline      -tl  Show the time line of a user, requiered arguments: user_name
 ''')
                 # invalid input returns an error message
                 else:
