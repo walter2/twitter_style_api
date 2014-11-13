@@ -7,6 +7,8 @@ It is written in Python 3.4 and is to be run in the terminal.
 Currently it is possible to register new users and to log them in and out from the terminal session. When a user is logged in he can post status updates.
 Only one user can be logged on through the terminal session.
 
+The terminal session is ended by pressing Enter.
+
 
 Usage
 =====
