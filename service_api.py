@@ -18,8 +18,8 @@ TOKEN_LENGTH = 8
 
 class Service:
     """ Service is the API through which the twitter like application is 
-     accessed.
-     At the initiation a repository is required.
+    accessed.
+    At the initiation a repository is required.
     """
 
     def __init__(self, repository):
@@ -48,7 +48,8 @@ class Service:
 
     def login(self, user_name, password):
         """ login() requiers a user_name and a password.
-        It checks if the user name and password match and then logs the user in.
+        It checks if the user name and password match
+        and then logs the user in.
         """
         if self.repository.login_authentication(user_name, password):
             token_string = self.generate_token_string()
@@ -60,7 +61,8 @@ class Service:
     def generate_token_string(self):
         """ generate_token_string() returns a random token."""
         char = string.ascii_letters
-        return ''.join(random.choice(char) for character in range(self.token_length))
+        return ''.join(random.choice(char) for character \
+               in range(self.token_length))
 
     def logout(self, user_name):
         """ logout() takes a user name and loggs the user out.
@@ -100,12 +102,10 @@ class Service:
 
     def show_following_posts(self, token):
         """ show_following_posts() takes a token as input.
-        It returns a list of all users, with user names and posts, that the user
-        of the token is following.
+        It returns a list of all users, with user names and posts, that the
+        user of the token is following.
         """
-        #get the following user names of the token user
-        #get the posts of each of the following users
-        signed_in_user_following = self.repository.users[token.user_name].following
+        signed_in_user_following = self.repository.get_followed_users(token)
         if len(signed_in_user_following) > 0:
             following_posts = []
             for name in signed_in_user_following:
@@ -114,4 +114,5 @@ class Service:
                 posts = []
             return following_posts
         else:
-            raise ValueError ('{0} is not following any other users.'.format(token.user_name))
+            raise ValueError ('{0} is not following any other users.'\
+                               .format(token.user_name))
