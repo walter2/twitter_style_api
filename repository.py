@@ -39,13 +39,13 @@ class Repository:
         except Exception as message:
             print(message)
 
-    def assign_token(self, user_name, token_string):
-        """ assign_token() takes a user_name and token string as input.
+    def assign_token(self, user_name):
+        """ assign_token() takes a user_name.
         It generates a token with the Token class and adds the token to
         the self.tokens list.
         It returns the token so that it can be used in the session.
         """
-        new_token = Token(user_name, token_string)
+        new_token = Token(user_name)
         self.tokens.append(new_token)
         return new_token
 

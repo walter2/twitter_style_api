@@ -7,6 +7,7 @@ Tests for the service api.
 
 
 import unittest
+import uuid
 
 from repository import Repository
 from service_api import Service
@@ -60,7 +61,6 @@ class TestService(unittest.TestCase):
 
     def test_user_can_login_with_matching_details(self):
         self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
-        expected = True
         actual = self.service.login('bhill', 'qwerty')
         self.assertTrue(actual)
     
@@ -74,12 +74,13 @@ class TestService(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.service.login('billh', 'qwerty')
 
-    def test_logged_in_user_gets_a_token_assigned(self):
+    def test_logged_in_user_gets_a_uuid4_token_assigned(self):
         self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')
         token = self.service.login('bhill', 'qwerty')
         expected = 'bhill'
         actual = token.user_name
         self.assertEqual(expected, actual)
+        self.assertTrue(isinstance(token.token_string, uuid.UUID))
 
     def test_multiple_users_can_login_to_the_service(self):
         self.service.register_user('Bill', 'Hill', 'bhill', 'qwerty')

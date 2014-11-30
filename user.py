@@ -8,8 +8,7 @@ user.py contains the user class for the twitter like api program.
 
 
 class User:
-    """ Class User represents a user in the program.
-    """
+    """ Class User represents a user in the program."""
 
     def __init__(self, first_name, last_name, user_name, password):
         self.first_name = first_name

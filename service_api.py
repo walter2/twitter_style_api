@@ -52,17 +52,10 @@ class Service:
         and then logs the user in.
         """
         if self.repository.login_authentication(user_name, password):
-            token_string = self.generate_token_string()
-            new_token = self.repository.assign_token(user_name, token_string)
+            new_token = self.repository.assign_token(user_name)
             return new_token
         else:
             raise ValueError ('Incorrect login details. Please try again.')
-
-    def generate_token_string(self):
-        """ generate_token_string() returns a random token."""
-        char = string.ascii_letters
-        return ''.join(random.choice(char) for character \
-               in range(self.token_length))
 
     def logout(self, user_name):
         """ logout() takes a user name and loggs the user out.

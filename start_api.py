@@ -100,19 +100,18 @@ def process_stdin():
                 # help menu
                 elif input_arguments[0] == '--help' or input_arguments[0] == '-h':
                     print('''This application can be operated with:
-  --help          -h   Open the help menu.
   --follow        -f   Follow add another user to the following list of the logged in user, requiered arguments: user_name
+  --help          -h   Open the help menu.
   --login         -li  Login a user, requiered arguments: user_name and password
   --logout        -lo  Log a user out, requiered arguments: user_name
   --post          -p   Post a new update for a logged in user, requiered arguments: message text
   --register      -r   Register a user, requiered arguments: first_name last_name user_name password
-  --showfollowing -sf  Shows the posts of all users that the signed on user is followeding
+  --showfollowing -sf  Shows the posts of all users that the signed on user is followeding.
   --timeline      -tl  Show the time line of a user, requiered arguments: user_name
 ''')
                 # invalid input returns an error message
                 else:
                     print('Invalid input. Please use \'--help\' or \'-h\' for more info.')
-                print('')
 
             except Exception as messsage:
                 print(messsage)
